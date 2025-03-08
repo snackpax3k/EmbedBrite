@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.3">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;div class=“embedbrite-widget” data-organization-id=“[replace with org id]“&gt;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">&lt;/div&gt;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">&lt;script&gt;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">(async function() {<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  const widgetContainer = document.querySelector(‘.embedbritewidget’);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  const orgId = widgetContainer.dataset.organizationId;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  const privateToken = ‘[replace ‘with private token];<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  // Show loading spinner initially<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  const loadingSpinner = document.createElement('div');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  loadingSpinner.classList.add('loading-spinner');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  loadingSpinner.textContent = 'Loading...';<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  widgetContainer.appendChild(loadingSpinner);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  async function getEventbriteEvents(orgId, token) {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    let url = `https://www.eventbriteapi.com/v3/organizations/${orgId}/events/?expand=logo,venue&amp;status=live,started,ended&amp;order_by=start_desc`;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    let events = [];<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    let hasMore = true;<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">    while (hasMore) {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const response = await fetch(url, {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        headers: {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">          Authorization: `Bearer ${token}`,<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        },<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      });<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      const data = await response.json();<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      if (!response.ok) {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        console.error("Error fetching events:", data);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        return [];<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      }<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      events = events.concat(data.events);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      if (data.pagination.has_more_items &amp;&amp; data.pagination.continuation) {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">          url = `https://www.eventbriteapi.com/v3/organizations/${orgId}/events/?expand=logo,venue&amp;status=live,started,ended&amp;order_by=start_desc&amp;continuation=${data.pagination.continuation}`;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      } else {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        hasMore = false;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      }<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    }<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    return events;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  }<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  const events = await getEventbriteEvents(orgId, privateToken);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  // Remove loading spinner<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  widgetContainer.removeChild(loadingSpinner);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  // Create a list element to hold the events<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  const eventList = document.createElement('ul');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  eventList.classList.add('event-list');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  widgetContainer.appendChild(eventList);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  // Function to populate the event list<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  function populateEventList(filteredEvents) {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    eventList.innerHTML = ''; // Clear existing events<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">    filteredEvents.forEach(event =&gt; {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const eventItem = document.createElement('li');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventItem.classList.add('event-item');<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      // Event Image<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      if (event.logo) {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        const eventImage = document.createElement('img');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        eventImage.src = event.logo.url;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        eventImage.alt = event.name.text;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        eventImage.classList.add('event-image');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        eventItem.appendChild(eventImage);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      }<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      const eventContent = document.createElement('div');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventContent.classList.add('event-content');<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      // Event Name<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const eventName = document.createElement('h3');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventName.classList.add('event-name');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const eventNameLink = document.createElement('a');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventNameLink.href = event.url;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventNameLink.target = '_blank';<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventNameLink.textContent = event.name.text;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventName.appendChild(eventNameLink);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventContent.appendChild(eventName);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      // Format start and end time using toLocaleTimeString<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const formattedStartTime = new Date(event.start.local).toLocaleTimeString([], optionsTime);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const formattedEndTime = new Date(event.end.local).toLocaleTimeString([], optionsTime);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      // Format date using toLocaleDateString<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const formattedStartDate = new Date(event.start.local).toLocaleDateString([], optionsDate);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      // Event Start Date and Time<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const eventStart = document.createElement('p');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventStart.classList.add('event-start');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventStart.textContent = `${formattedStartDate} @ ${formattedStartTime}`;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventContent.appendChild(eventStart);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      // Event Venue<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      if (event.venue) {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        const eventVenue = document.createElement('p');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        eventVenue.classList.add('event-venue');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        eventVenue.textContent = `Venue: ${event.venue.name}, ${event.venue.address.address_1}, ${event.venue.address.city}, ${event.venue.address.region} ${event.venue.address.postal_code}`;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">        eventContent.appendChild(eventVenue);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      }<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      // Hosted By (with Link)<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const eventHost = document.createElement('p');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventHost.classList.add('event-host');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const eventHostLink = document.createElement('a');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventHostLink.href = `https://www.eventbrite.com/o/${event.organizer_id}`;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventHostLink.target = '_blank';<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventHostLink.textContent = 'Hosted By [‘Replace with your Eventbrite Name]’;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventHost.appendChild(eventHostLink);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventContent.appendChild(eventHost);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      // Buttons Container<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const eventButtons = document.createElement('div');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventButtons.classList.add('event-buttons');<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      // Read More Button (Opens link to event page)<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const readMoreBtn = document.createElement('a');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      readMoreBtn.classList.add('event-button', 'read-more-btn');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      readMoreBtn.href = event.url;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      readMoreBtn.target = '_blank';<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      readMoreBtn.textContent = 'Read More';<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventButtons.appendChild(readMoreBtn);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      // Get Tickets Button<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const getTicketsBtn = document.createElement('a');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      getTicketsBtn.classList.add('event-button', 'get-tickets-btn');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      getTicketsBtn.href = `https://www.eventbrite.com/checkout-external?eid=${event.id}`;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      getTicketsBtn.target = '_blank';<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      getTicketsBtn.textContent = 'Get Tickets';<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventButtons.appendChild(getTicketsBtn);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      eventContent.appendChild(eventButtons);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventItem.appendChild(eventContent);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      eventList.appendChild(eventItem);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    });<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  }<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  // Get unique months and years from events<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  const uniqueMonths = new Set();<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  const uniqueYears = new Set();<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  events.forEach(event =&gt; {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    const startDate = new Date(event.start.local);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    uniqueMonths.add(startDate.getMonth());<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    uniqueYears.add(startDate.getFullYear());<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  });<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  // Create month dropdown<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  const monthSelect = document.createElement('select');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  monthSelect.id = 'month-filter';<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  const monthNames = ["January", "February", "March", "April", "May", "June",<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">                      "July", "August", "September", "October", "November", "December"];<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  monthNames.forEach((monthName, index) =&gt; {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    const option = document.createElement('option');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    option.value = index;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    option.textContent = monthName;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    monthSelect.appendChild(option);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  });<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  widgetContainer.insertBefore(monthSelect, eventList);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  // Create year dropdown<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  const yearSelect = document.createElement('select');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  yearSelect.id = 'year-filter';<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  Array.from(uniqueYears).sort().forEach(year =&gt; {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    const option = document.createElement('option');<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    option.value = year;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    option.textContent = year;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    yearSelect.appendChild(option);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  });<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  widgetContainer.insertBefore(yearSelect, eventList);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  // Set default values for month and year<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  const now = new Date();<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  monthSelect.value = now.getMonth();<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  yearSelect.value = now.getFullYear();<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  // Filter events by selected month and year<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  function filterEvents() {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    const selectedMonth = parseInt(monthSelect.value);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    const selectedYear = parseInt(yearSelect.value);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">    const filteredEvents = events.filter(event =&gt; {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      const eventStart = new Date(event.start.local);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">      return eventStart.getMonth() === selectedMonth &amp;&amp; eventStart.getFullYear() === selectedYear;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">    });<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">    populateEventList(filteredEvents);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  }<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  // Add event listeners to dropdowns<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  monthSelect.addEventListener('change', filterEvents);<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  yearSelect.addEventListener('change', filterEvents);<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">  // Call filterEvents initially to display events for the current month<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">  filterEvents();<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">})();<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
+</body>
+</html>

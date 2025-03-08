@@ -1,0 +1,125 @@
+/* General Styling */
+.embedbrite-widget { /* Changed class name here */
+    font-family: "Century Gothic", sans-serif;
+    border: none;
+    padding: 15px;
+    border-radius: 0;
+    width: 100%;
+    max-width: 1000px;
+   /* Adjust as needed */
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.embedbrite-widget ul { /* Changed class name here */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+   /* Allow items to wrap */
+    gap: 20px;
+   /* Space between items */
+}
+
+.embedbrite-widget li { /* Changed class name here */
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-basis: 260px;
+   /* Minimum width for each item */
+    flex-grow: 1;
+   /* Allow items to grow to fill available space */
+}
+
+/* Event Image */
+.embedbrite-widget .event-image { /* Changed class name here */
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+/* Event Content */
+.embedbrite-widget .event-content { /* Changed class name here */
+    padding: 0 10px;
+}
+
+/* Event Name */
+.embedbrite-widget .event-name { /* Changed class name here */
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.embedbrite-widget .event-name a { /* Changed class name here */
+    text-decoration: none;
+    color: #222222;
+}
+
+/* Event Start Date */
+.embedbrite-widget .event-start { /* Changed class name here */
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* Event Venue */
+.embedbrite-widget .event-venue { /* Changed class name here */
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* Hosted By */
+.embedbrite-widget .event-host { /* Changed class name here */
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.embedbrite-widget .event-host a { /* Changed class name here */
+    color: #3480dc;
+    text-decoration: none;
+}
+
+/* Buttons Container */
+.embedbrite-widget .event-buttons { /* Changed class name here */
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* Buttons */
+.embedbrite-widget .event-button { /* Changed class name here */
+    background-color: #435b77;
+    color: #fff;
+    padding: 7px 10px;
+    border: 1px solid #435b77;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    width: 48%;
+    box-sizing: border-box;
+}
+
+.embedbrite-widget .event-button:hover { /* Changed class name here */
+    background-color: #3480dc;
+    border-color: #3480dc;
+}
+
+/* Loading Spinner */
+.embedbrite-widget .loading-spinner { /* Changed class name here */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+   /* Adjust height as needed */
+    font-size: 16px;
+    color: #555;
+}
