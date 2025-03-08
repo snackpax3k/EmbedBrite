@@ -8,6 +8,17 @@ A simple way to embed an Eventbrite event feed into your website.
 *   Offers options to filter events by year and month.
 *   Includes a loading screen to improve user experience while the API is called.
 
+## Screenshots
+
+![Live Example](live-example.png)
+This is a live example of the EmbedBrite widget.
+
+![Filter Options](filter-options.jpg)
+The widget allows users to filter events by year and month.
+
+![Loading Screen](loading-screen.jpeg)
+The widget includes a loading screen to provide feedback while events are being fetched.
+
 ## Setup
 
 1.  Download the project files.
